@@ -4,13 +4,17 @@
   <meta charset="utf-8">
   
   
-  <title>Hexo</title>
+  <title>Unity编辑器扩展 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/index.html">
+  <meta name="description" content="编辑器菜单判断菜单项是否可用函数。 12345678910111213141516171819202122232425    [MenuItem(&quot;GameObject&#x2F;test&quot;, true, 14)]    static bool TestisValidate()    &#123;        &#x2F;&#x2F;返回值为false，则菜单项可用，反之不可使用        retur">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity编辑器扩展">
+<meta property="og:url" content="http://example.com/2023/12/31/Unity%E7%BC%96%E8%BE%91%E5%99%A8%E6%89%A9%E5%B1%95/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="编辑器菜单判断菜单项是否可用函数。 12345678910111213141516171819202122232425    [MenuItem(&quot;GameObject&#x2F;test&quot;, true, 14)]    static bool TestisValidate()    &#123;        &#x2F;&#x2F;返回值为false，则菜单项可用，反之不可使用        retur">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-12-30T16:35:47.000Z">
+<meta property="article:modified_time" content="2023-12-30T16:36:24.457Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -67,73 +71,7 @@
 </header>
 
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-杂项" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2023/12/31/%E6%9D%82%E9%A1%B9/" class="article-date">
-  <time class="dt-published" datetime="2023-12-30T16:38:07.000Z" itemprop="datePublished">2023-12-31</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2023/12/31/%E6%9D%82%E9%A1%B9/">杂项</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>部分Unity编辑器的知识，现在还不知道放在那里</p>
-<pre><code>    [SerializeFiled]
-</code></pre>
-<p>即Unity中的<a href="#%E5%BA%8F%E5%88%97%E5%8C%96">序列化</a>的一种特性，Unity默认对public变量序列化使其能够在Inspector界面显示以及修改</p>
-<pre><code>对于private变量，想要在其他类中通过代码修改或者是在检视界面修改对应值，可以使用
-[SerializeFiled]
-    private string value;
-    
-
-而想要可以通过代码赋值，而又不想显示在编辑器中则使用
-[HideInspector][SerializeFiled]
-    private string vaule;
-
-
-[HideInspector]
-将变量从检视界面隐藏，也可用于public类型的变量
-</code></pre>
-<hr>
-<pre><code>[DidReloadScripts]
-在Unity重新加载脚本时执行
-</code></pre>
-<hr>
-<pre><code>[Assembly]
-C#程序集
-</code></pre>
-<p>c#中反射机制即使用此种实现，程序集中包含了类的所在位置，如此可以使得在运行时获得类的信息。也可以通过此种方法生成类的对象即反射。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2023/12/31/%E6%9D%82%E9%A1%B9/" data-id="clqsaepb50001jcto0fpua70e" data-title="杂项" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Unity编辑器扩展" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-Unity编辑器扩展" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2023/12/31/Unity%E7%BC%96%E8%BE%91%E5%99%A8%E6%89%A9%E5%B1%95/" class="article-date">
   <time class="dt-published" datetime="2023-12-30T16:35:47.000Z" itemprop="datePublished">2023-12-31</time>
@@ -146,8 +84,8 @@ C#程序集
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2023/12/31/Unity%E7%BC%96%E8%BE%91%E5%99%A8%E6%89%A9%E5%B1%95/">Unity编辑器扩展</a>
+    <h1 class="p-name article-title" itemprop="headline name">
+      Unity编辑器扩展
     </h1>
   
 
@@ -206,101 +144,28 @@ window.Show();
     </footer>
   </div>
   
-</article>
-
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-Test" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2023/12/30/Test/" class="article-date">
-  <time class="dt-published" datetime="2023-12-30T15:49:05.000Z" itemprop="datePublished">2023-12-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+    <a href="/2023/12/31/%E6%9D%82%E9%A1%B9/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
         
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2023/12/30/Test/">Test</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>啊这</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2023/12/30/Test/" data-id="clqs8skz80000nstohef2av7k" data-title="Test" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2023/12/30/hello-world/" class="article-date">
-  <time class="dt-published" datetime="2023-12-29T18:24:52.219Z" itemprop="datePublished">2023-12-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+          杂项
         
+      </div>
+    </a>
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2023/12/30/hello-world/">Hello World</a>
-    </h1>
   
+    <a href="/2023/12/30/Test/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">Test</div>
+    </a>
+  
+</nav>
 
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2023/12/30/hello-world/" data-id="clqs8skzj0002nstoas0z1oi2" data-title="Hello World" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-    </footer>
-  </div>
   
 </article>
-
-
-
-  
 
 
 </section>
