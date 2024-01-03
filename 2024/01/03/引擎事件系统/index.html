@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>引擎事件系统 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="事件系统原理c++的 function可以理解为c中的函数指针，保存触发执行的函数，具体就是写一个委托(c++没有高贵的c#里的) 123using ListenerID &#x3D; unsigned int;&#x2F;&#x2F;保存事件对应的IDusing CallBack &#x3D; std::function&lt;void(ArgsTypes...)&gt;;&#x2F;&#x2F;此处即是代表执行的函数 实现在Event中通过unorde">
+<meta property="og:type" content="article">
+<meta property="og:title" content="引擎事件系统">
+<meta property="og:url" content="http://example.com/2024/01/03/%E5%BC%95%E6%93%8E%E4%BA%8B%E4%BB%B6%E7%B3%BB%E7%BB%9F/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="事件系统原理c++的 function可以理解为c中的函数指针，保存触发执行的函数，具体就是写一个委托(c++没有高贵的c#里的) 123using ListenerID &#x3D; unsigned int;&#x2F;&#x2F;保存事件对应的IDusing CallBack &#x3D; std::function&lt;void(ArgsTypes...)&gt;;&#x2F;&#x2F;此处即是代表执行的函数 实现在Event中通过unorde">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/Event_Test_Image.png">
+<meta property="article:published_time" content="2024-01-03T15:05:27.000Z">
+<meta property="article:modified_time" content="2024-01-03T15:40:51.236Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/Event_Test_Image.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-引擎事件系统" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/01/03/%E5%BC%95%E6%93%8E%E4%BA%8B%E4%BB%B6%E7%B3%BB%E7%BB%9F/" class="article-date">
+  <time class="dt-published" datetime="2024-01-03T15:05:27.000Z" itemprop="datePublished">2024-01-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      引擎事件系统
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="事件系统"><a href="#事件系统" class="headerlink" title="事件系统"></a>事件系统</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>c++的 <strong>function</strong>可以理解为c中的函数指针，保存触发执行的函数，具体就是写一个委托(c++没有高贵的c#里的)</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> ListenerID = <span class="type">unsigned</span> <span class="type">int</span>;<span class="comment">//保存事件对应的ID</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> CallBack = std::function&lt;<span class="built_in">void</span>(ArgsTypes...)&gt;;<span class="comment">//此处即是代表执行的函数</span></span><br></pre></td></tr></table></figure>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>在Event中通过unorder_map&lt;key,function&gt;保存事件ID和具体实现，一般使用lambda函数来编写函数实现。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> ...ArgsTypes&gt;<span class="comment">//模板类</span></span><br><span class="line">	ListenerID Event&lt;ArgsTypes...&gt;::<span class="built_in">AddListenerID</span>(CallBack p_call)</span><br><span class="line">	&#123;</span><br><span class="line">		ListenerID listenerid = ListenerID_now++;<span class="comment">//返回创建的监听ID</span></span><br><span class="line">		m_Callbacks[listenerid] = p_call;<span class="comment">//保存传入的函数</span></span><br><span class="line">		<span class="keyword">return</span> listenerid;</span><br><span class="line">	&#125;</span><br><span class="line">然后用重载运算符+=</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> ...ArgsTypes&gt;</span><br><span class="line">	ListenerID Event&lt;ArgsTypes...&gt;::<span class="keyword">operator</span>+=(CallBack p_call)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">AddListenerID</span>(p_call);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<p>至此，整个实现结束，剩下的就是调用和删除(不写了)</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">   <span class="keyword">template</span>&lt;<span class="keyword">class</span>... ArgsTypes&gt;</span><br><span class="line"><span class="type">void</span> Event&lt;ArgsTypes ...&gt;::<span class="built_in">Invoke</span>(ArgsTypes... p_args)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span>&amp; [key, value] : m_Callbacks)</span><br><span class="line">		<span class="built_in">value</span>(p_args...);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="运行示例"><a href="#运行示例" class="headerlink" title="运行示例"></a>运行示例</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">      Eventing::Event&lt;&gt; Events;</span><br><span class="line">Events += []() &#123;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;Add Event!!!&quot;</span> &lt;&lt; endl;</span><br><span class="line">&#125;;</span><br><span class="line">Events.<span class="built_in">Invoke</span>();</span><br><span class="line"></span><br><span class="line">Eventing::Event&lt;<span class="type">int</span>,<span class="type">float</span>&gt;Events2;</span><br><span class="line"></span><br><span class="line">Events2 += [](<span class="type">int</span> a, <span class="type">float</span> b) &#123;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;Events2 a+b&quot;</span> &lt;&lt; endl;</span><br><span class="line">	cout &lt;&lt; a + b &lt;&lt; endl;</span><br><span class="line">&#125;;</span><br><span class="line">      </span><br><span class="line">Events2 += [](<span class="type">int</span> a, <span class="type">float</span> b) &#123;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;Events2 a-b&quot;</span> &lt;&lt; endl;</span><br><span class="line">	cout &lt;&lt; a - b &lt;&lt; endl;</span><br><span class="line">&#125;;</span><br><span class="line">Events2.<span class="built_in">Invoke</span>(<span class="number">2</span>, <span class="number">3</span>);</span><br></pre></td></tr></table></figure>
+<p><img src="/Event_Test_Image.png" alt="Event Test Image"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2024/01/03/%E5%BC%95%E6%93%8E%E4%BA%8B%E4%BB%B6%E7%B3%BB%E7%BB%9F/" data-id="clqxy50qm0000pgto4vu7gg5d" data-title="引擎事件系统" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2024/01/03/T-Engine-TODO/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">T_Engine_TODO</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">一月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/01/03/%E5%BC%95%E6%93%8E%E4%BA%8B%E4%BB%B6%E7%B3%BB%E7%BB%9F/">引擎事件系统</a>
+          </li>
+        
+          <li>
+            <a href="/2024/01/03/T-Engine-TODO/">T_Engine_TODO</a>
+          </li>
+        
+          <li>
+            <a href="/2023/12/31/%E6%9D%82%E9%A1%B9/">杂项</a>
+          </li>
+        
+          <li>
+            <a href="/2023/12/31/Unity%E7%BC%96%E8%BE%91%E5%99%A8%E6%89%A9%E5%B1%95/">Unity编辑器扩展</a>
+          </li>
+        
+          <li>
+            <a href="/2023/12/30/Test/">Test</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
