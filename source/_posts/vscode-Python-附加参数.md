@@ -1,7 +1,7 @@
 ---
 title: vscode Python 附加参数
 date: 2024-09-14 00:14:55
-tags: Python
+categories: [Python]
 ---
 ## vscode带参数调试Python
 

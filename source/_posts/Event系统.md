@@ -1,7 +1,7 @@
 ---
 title: Event系统
 date: 2024-01-04 00:05:42
-tags: 引擎
+categories: [引擎,事件]
 ---
 ## 事件系统
 ### 原理

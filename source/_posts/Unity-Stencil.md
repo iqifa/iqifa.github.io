@@ -1,7 +1,7 @@
 ---
 title: Unity_Stencil
 date: 2024-10-29 00:31:05
-tags:
+categories: [Unity,渲染]
 ---
 ### Unity 模板测试
 

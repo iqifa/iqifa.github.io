@@ -1,7 +1,7 @@
 ---
 title: Unity编辑器扩展
 date: 2023-12-31 00:35:47
-tags: Unity
+categories: [Unity,编辑器扩展]
 ---
 ### 编辑器菜单
 判断菜单项是否可用函数。
