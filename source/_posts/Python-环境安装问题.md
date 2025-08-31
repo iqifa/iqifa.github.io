@@ -157,3 +157,81 @@ ok 之后再重新编译，结束之后
     EDF  6F10701 7zAES
     EDF  6F00181 AES256CBC
 ok，支持$[zstd,brotil]$了
+
+#### MinkowskiEngine Intall Error
+万恶之源 Nvidia的 [MinkowskiEngine](https://github.com/NVIDIA/MinkowskiEngine)
+
+下面是几个问题
+#####  can't find openblas或cblas.h
+== cuda 11.* ==
+
+ 首先查看是否安装openblas 
+    
+    conda list openblas
+
+
+    output
+    # packages in environment at /home/qaq/miniconda3/envs/SNN-JRD:
+    #
+    # Name                     Version          Build            Channel
+    libopenblas                0.3.29           ha39b09d_0       anaconda
+    openblas-devel             0.3.29           ha39b09d_0       anaconda
+
+    若没有安装 
+
+    conda install openblas-devel -c anaconda -y
+
+    然后是另外一个问题 
+
+    The lib file of openblas should be in the path like xxx/anaconda3/envs/<env_name>/lib, but this shit program only looks for the lib files in xxx/anaconda3/envs/<env_name>/lib/python3.x/site-packages/torch/lib. So, all we have to do is to copy the .so files into the right path by:
+
+    cp xxx/anaconda3/envs/<env_name>/lib/libopenblas.so* xxx/anaconda3/envs/<env_name>/lib/python3.x/site-packages/torch/lib/.
+
+
+    好，如果cuda11应该没什么问题了
+##### Compile Error for cuda 12.*
+但是若是cuda12.* 唉
+
+step1:
+check cuda nvcc gcc 
+
+step2:
+Modify shared pointer definition in '/usr/include/c++/{VERSION}/bits/shared_ptr_base.h'
+```c++
+    //replace
+    auto __raw = __to_address(__r.get())
+    //to
+    auto __raw = std::__to_address(__r.get())
+```
+step3:Install dependencies
+```
+pip install --upgrade setuptools==59.8.0      # setuptools version must be lower than 60.0
+apt install build-essential python3-dev libopenblas-dev
+pip install ninja
+```
+step4: If the compilation fails, modify the following header files:
+
+```c++
+    //../MinkowskiEngine/src/convolution_kernel.cuh add headfile
+    #include <thrust/execution_policy.h>
+
+    //.../MinkowskiEngine/src/coordinate_map_gpu.cu add headfile
+    #include <thrust/unique.h>
+    #include <thrust/remove.h>
+
+    //.../MinkowskiEngine/src/spmm.cu add headfile
+    #include <thrust/execution_policy.h>
+    #include <thrust/reduce.h>
+    #include <thrust/sort.h>
+
+    //.../MinkowskiEngine/src/3rdparty/concurrent_unordered_map.cuh add headfile
+
+    #include <thrust/execution_policy.h>
+ ```
+Final Check 
+
+    python setup.py install --blas_include_dirs=${CONDA_PREFIX}/include --blas=openblas
+
+1.[cblash](https://github.com/NVIDIA/MinkowskiEngine/issues/603)
+
+2.[for cuda12](https://github.com/Julie-tang00/Common-envs-issues/blob/main/Cuda12-MinkowskiEngine)
